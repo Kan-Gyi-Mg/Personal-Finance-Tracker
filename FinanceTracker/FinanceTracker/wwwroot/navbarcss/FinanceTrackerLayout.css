@@ -1,0 +1,28 @@
+﻿body {
+    background-color: #ADD8E6;
+    color: #333333;
+}
+.navbarcolor {
+    background-color: #003366;
+}
+
+.text-logo {
+    font-size: 1.5rem;
+    color: #FF5F00;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+    .text-logo:hover {
+        transform: scale(1.2);
+        color: #CCCCCC;
+    }
+.nav-link {
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+    .nav-link:hover{
+
+        color: #CCCCCC; 
+    }

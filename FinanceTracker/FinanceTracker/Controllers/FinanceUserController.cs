@@ -9,20 +9,23 @@ namespace FinanceTracker.Controllers
 {
     public class FinanceUserController : Controller
     {
+        private readonly SignInManager<FinanceUser> _signInManager;
         private readonly UserManager<FinanceUser> _usermanager;
         private readonly FinanceDbContext _context;
-        public FinanceUserController(UserManager<FinanceUser> userManager, FinanceDbContext context)
+        public FinanceUserController(SignInManager<FinanceUser> signInManager,UserManager<FinanceUser> userManager, FinanceDbContext context)
         {
             _usermanager = userManager;
             _context = context;
+            _signInManager = signInManager;
         }
-        
+        //show all user
         [HttpGet]
         public async Task<IActionResult> ShowUserList()
         {
             var User = _usermanager.Users;
             return View(User);
         }
+        //create user
         [HttpGet]
         public async Task<IActionResult> UserCreate() => View();
         [HttpPost]
@@ -30,6 +33,22 @@ namespace FinanceTracker.Controllers
         public async Task<IActionResult> UserCreate(LoginViewModel model)
         {
             throw new NotImplementedException();
+        }
+        //login user
+        [HttpGet]
+        public async Task<IActionResult> UserLogin() => View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserLogin(LoginViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+        //logout user
+        [HttpPost]
+        public async Task<IActionResult> UserLogout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("UserLogin", "FinanceUser");
         }
     }
 }

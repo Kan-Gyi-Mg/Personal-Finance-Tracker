@@ -4,26 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance Tracker</title>
-
-    <style>
-        
-    </style>
+    <link href="~/cdnlink/csscdn/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/navbarcss/FinanceTrackerLayout.css" rel="stylesheet" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <div class="collapse navbar-collapse">
-
+    <header>
+        <nav class="navbar navbar-expand-lg navbarcolor">
+            <div class="container">
+                <a class="navbar-brand text-logo" href="#">Finance Tracker</a>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item ms-lg-5">
+                            <a href="#" class="nav-link">Dashboard</a>
+                        </li>
+                        <li class="nav-item ms-lg-5">
+                            <a href="#" class="nav-link">News</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-lg-5">
+                                <a href="@Url.Action("UserLogout", "FinanceUser")" class="nav-link">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-lg-5">
+                                <a href="@Url.Action("UserLogin","FinanceUser")" class="nav-link">Sign In</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
     <section class="pb-lg-2">
         @RenderBody()
     </section>
     <footer>
 
     </footer>
+    <script src="~/cdnlink/jslibrary/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
