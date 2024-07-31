@@ -1,5 +1,6 @@
 using FinanceTracker.DbClass;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using FinanceTracker.Models.User;
+using FinanceTracker.RoleInitiator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,22 +8,34 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 // Database connection
 var connectionString = builder.Configuration.GetConnectionString("Localcon");
-builder.Services.AddDbContext<FinanceDbContext>(option =>
-option
-  .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+builder.Services.AddDbContext<FinanceDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
-//Identity config lote tr
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<FinanceDbContext>().AddDefaultTokenProviders();
+
+// Identity configuration
+builder.Services.AddIdentity<FinanceUser, IdentityRole>()
+    .AddEntityFrameworkStores<FinanceDbContext>()
+    .AddDefaultTokenProviders();
+
+// Register RoleInitializer
+builder.Services.AddScoped<IRoleInitializer, RoleInitializer>();
+
 var app = builder.Build();
+
+// Call the Role Initializer important when adding role okpar
+using (var scope = app.Services.CreateScope())
+{
+    var roleInitializer = scope.ServiceProvider.GetRequiredService<IRoleInitializer>();
+    await roleInitializer.InitializeAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -35,6 +48,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=FinanceUser}/{action=ShowUserList}/{id?}");
 
 app.Run();
