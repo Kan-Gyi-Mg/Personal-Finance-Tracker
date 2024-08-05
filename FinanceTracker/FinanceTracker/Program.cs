@@ -19,9 +19,18 @@ builder.Services.AddIdentity<FinanceUser, IdentityRole>()
 
 // Register RoleInitializer
 builder.Services.AddScoped<IRoleInitializer, RoleInitializer>();
+builder.Services.AddTransient<EmailService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+//section
+builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // Call the Role Initializer important when adding role okpar
@@ -42,6 +51,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
