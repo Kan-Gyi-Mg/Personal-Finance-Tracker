@@ -65,6 +65,25 @@ namespace FinanceTracker.Controllers
             }
             return View(model);
         }
+        //forgot password
+        [HttpGet]
+        public async Task<IActionResult> UserForgotPassword() => View();
+        [HttpPost]
+        public async Task<IActionResult> UserForgotPassword(String Email)
+        {
+            if(Email == null)
+            {
+                return View(Email);
+            }
+            var user = await _userManager.FindByEmailAsync(Email);
+            user.ForgotPassword = true;
+            var otp = GenerateOTP();
+            HttpContext.Session.SetString("ForgotOTP", otp);
+            HttpContext.Session.SetString("ForgotUserId", user.Id);
+            await _emailService.SendEmailAsync(Email, "OTP Code", $"Your OTP code is {otp}");
+            return RedirectToAction("VerifyForgotOTP");
+            return View(Email);
+        }
         //login user
         [HttpGet]
         public async Task<IActionResult> UserLogin() => View();
@@ -134,8 +153,8 @@ namespace FinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyOTP(OTPViewModel model)
         {
-            var storedOtp = HttpContext.Session.GetString("OTP");
-            var userId = HttpContext.Session.GetString("RegisterUserId");
+            var storedOtp = HttpContext.Session.GetString("ForgotOTP");
+            var userId = HttpContext.Session.GetString("ForgotUserId");
 
             if (model.OTP == storedOtp && !string.IsNullOrEmpty(userId))
             {
@@ -152,7 +171,31 @@ namespace FinanceTracker.Controllers
             ModelState.AddModelError(string.Empty, "Invalid OTP.");
             return View(model);
         }
+        //forgototp
+        [HttpGet]
+        public IActionResult VerifyForgotOTP()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyForgotOTP(OTPViewModel model)
+        {
+            var storedOtp = HttpContext.Session.GetString("OTP");
+            var userId = HttpContext.Session.GetString("RegisterUserId");
 
+            if (model.OTP == storedOtp && !string.IsNullOrEmpty(userId))
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    return RedirectToAction("Resetpassword","FinanceUser");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid OTP.");
+            return View(model);
+        }
         private string GenerateOTP()
         {
             var random = new Random();
