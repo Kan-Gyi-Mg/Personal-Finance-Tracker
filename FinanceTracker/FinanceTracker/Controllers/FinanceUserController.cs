@@ -153,8 +153,8 @@ namespace FinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyOTP(OTPViewModel model)
         {
-            var storedOtp = HttpContext.Session.GetString("ForgotOTP");
-            var userId = HttpContext.Session.GetString("ForgotUserId");
+            var storedOtp = HttpContext.Session.GetString("OTP");
+            var userId = HttpContext.Session.GetString("RegisterUserId");
 
             if (model.OTP == storedOtp && !string.IsNullOrEmpty(userId))
             {
@@ -181,19 +181,30 @@ namespace FinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyForgotOTP(OTPViewModel model)
         {
-            var storedOtp = HttpContext.Session.GetString("OTP");
-            var userId = HttpContext.Session.GetString("RegisterUserId");
+            var storedOtp = HttpContext.Session.GetString("ForgotOTP");
+            var userId = HttpContext.Session.GetString("ForgotUserId");
 
             if (model.OTP == storedOtp && !string.IsNullOrEmpty(userId))
             {
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user != null)
                 {
-                    return RedirectToAction("Resetpassword","FinanceUser");
+                    return RedirectToAction("UserResetPassword","FinanceUser",new { UserId = user.Id });
                 }
             }
-
             ModelState.AddModelError(string.Empty, "Invalid OTP.");
+            return View(model);
+        }
+        //Reset Password
+        [HttpGet]
+        public IActionResult VerifyForgotOTP(String UserId)
+        {
+            return View(UserId);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult VerifyForgotOTP(UserResetPasswordViewModel model)
+        {
             return View(model);
         }
         private string GenerateOTP()
