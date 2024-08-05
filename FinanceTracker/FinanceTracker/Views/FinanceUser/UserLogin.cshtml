@@ -15,9 +15,9 @@
             </div>
             <form asp-controller="FinanceUser" asp-action="UserLogin" method="post">
                 <div class="form-group mb-4">
-                    <label asp-for="Email" class="mb-2"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <label asp-for="EmailOrUserName" class="mb-2">Email or Name</label>
+                    <input asp-for="EmailOrUserName" class="form-control" />
+                    <span asp-validation-for="EmailOrUserName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-4">
@@ -32,10 +32,14 @@
                         <label class="form-check-label" asp-for="RememberMe">Remember me</label>
                     </div>
                 </div>
+                
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary w-50">Sign In</button>
                 </div>
-                </form>
+            </form>
+            <div class="text-center mb-2">
+                <a href="@Url.Action("UserCreate","FinanceUser")" class="text-decoration-none">forgot password</a>
+            </div>
             <div class="text-center">
                 have not account yet? &nbsp;<a href="@Url.Action("UserCreate","FinanceUser")" class="text-decoration-none">Register</a>
             </div>

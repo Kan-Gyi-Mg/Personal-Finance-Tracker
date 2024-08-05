@@ -5,7 +5,7 @@ namespace FinanceTracker.ViewModels.FinanceUserView
     public class LoginViewModel
     {
         [Required]
-        public string Email { get; set; }
+        public string EmailOrUserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
