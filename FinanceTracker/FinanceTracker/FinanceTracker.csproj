@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\FinanceUser\UserLogin.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
@@ -21,6 +25,18 @@
     </PackageReference>
     <PackageReference Include="MySql.Data" Version="9.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\FinanceUser\UserLogin.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\FinanceUser\UserLogin.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\FinanceUser\UserLogin.cshtml" />
   </ItemGroup>
 
 </Project>

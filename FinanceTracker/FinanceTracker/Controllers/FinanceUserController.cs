@@ -41,7 +41,13 @@ namespace FinanceTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserLogin(LoginViewModel model)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                // Perform login logic here
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
         }
         //logout user
         [HttpPost]
