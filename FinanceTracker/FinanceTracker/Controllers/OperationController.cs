@@ -4,7 +4,8 @@ namespace FinanceTracker.Controllers
 {
     public class OperationController : Controller
     {
-        public IActionResult Index()
+        //landing page of the site
+        public IActionResult StartingPage()
         {
             return View();
         }

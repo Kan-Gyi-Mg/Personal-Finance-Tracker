@@ -48,6 +48,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=FinanceUser}/{action=ShowUserList}/{id?}");
+    pattern: "{controller=Operation}/{action=StartingPage}/{id?}");
 
 app.Run();
