@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceTracker.ViewModels.FinanceUser
+namespace FinanceTracker.ViewModels.FinanceUserView
 {
     public class LoginViewModel
     {

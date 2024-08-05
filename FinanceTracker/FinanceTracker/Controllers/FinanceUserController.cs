@@ -1,6 +1,6 @@
 ﻿using FinanceTracker.DbClass;
 using FinanceTracker.Models.User;
-using FinanceTracker.ViewModels.FinanceUser;
+using FinanceTracker.ViewModels.FinanceUserView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,19 +36,17 @@ namespace FinanceTracker.Controllers
         }
         //login user
         [HttpGet]
-        public async Task<IActionResult> UserLogin() => View();
+        public async Task<IActionResult> UserLogin()
+        {
+            return View();
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> UserLogin(LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                // Perform login logic here
-                return RedirectToAction("Index", "Home");
-            }
-
             return View(model);
         }
+
         //logout user
         [HttpPost]
         public async Task<IActionResult> UserLogout()

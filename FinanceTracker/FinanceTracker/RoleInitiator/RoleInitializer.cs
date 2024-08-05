@@ -30,8 +30,8 @@ namespace FinanceTracker.RoleInitiator
 
             // Create a default admin user if necessary
             string adminUserName = "admin";
-            string adminEmail = "admin@example.com";
-            string adminPassword = "Admin@12345";
+            string adminEmail = "admin@gmail.com";
+            string adminPassword = "Admin123!@#";
 
             if (await _userManager.FindByNameAsync(adminUserName) == null)
             {

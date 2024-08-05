@@ -6,9 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 // Database connection
 var connectionString = builder.Configuration.GetConnectionString("Localcon");
 builder.Services.AddDbContext<FinanceDbContext>(options =>
@@ -22,6 +19,8 @@ builder.Services.AddIdentity<FinanceUser, IdentityRole>()
 
 // Register RoleInitializer
 builder.Services.AddScoped<IRoleInitializer, RoleInitializer>();
+// Add services to the container.
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -48,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=FinanceUser}/{action=UserLogin}/{id?}");
+    pattern: "{controller=Operation}/{action=StartingPage}/{id?}");
 
 app.Run();
