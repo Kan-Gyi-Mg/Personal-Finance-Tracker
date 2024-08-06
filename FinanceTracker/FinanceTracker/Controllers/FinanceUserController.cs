@@ -82,7 +82,6 @@ namespace FinanceTracker.Controllers
             HttpContext.Session.SetString("ForgotUserId", user.Id);
             await _emailService.SendEmailAsync(Email, "OTP Code", $"Your OTP code is {otp}");
             return RedirectToAction("VerifyForgotOTP");
-            return View(Email);
         }
         //login user
         [HttpGet]
@@ -173,7 +172,7 @@ namespace FinanceTracker.Controllers
         }
         //forgototp
         [HttpGet]
-        public IActionResult VerifyForgotOTP()
+        public async Task<IActionResult> VerifyForgotOTP()
         {
             return View();
         }
@@ -189,7 +188,7 @@ namespace FinanceTracker.Controllers
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user != null)
                 {
-                    return RedirectToAction("UserResetPassword","FinanceUser",new { UserId = user.Id });
+                    return RedirectToAction("UserResetPassword","FinanceUser");
                 }
             }
             ModelState.AddModelError(string.Empty, "Invalid OTP.");
@@ -197,14 +196,48 @@ namespace FinanceTracker.Controllers
         }
         //Reset Password
         [HttpGet]
-        public IActionResult VerifyForgotOTP(String UserId)
+        public async Task<IActionResult> UserResetPassword(String UserId)
         {
             return View(UserId);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VerifyForgotOTP(UserResetPasswordViewModel model)
+        public async Task<IActionResult> UserResetPassword(UserResetPasswordViewModel model)
         {
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null && user.ForgotPassword == false) {
+
+                var result = await _userManager.RemovePasswordAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+
+                result = await _userManager.AddPasswordAsync(user, model.Password); // Set new password
+                if (result.Succeeded)
+                {
+                    user.ForgotPassword = false;
+                    _context.financeusers.Update(user);
+                    _context.SaveChanges();
+                    return RedirectToAction("UserLogin", "FinanceUser");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+            }
             return View(model);
         }
         private string GenerateOTP()
