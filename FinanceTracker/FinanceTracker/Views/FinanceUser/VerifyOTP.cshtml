@@ -27,7 +27,7 @@
                 </div>
             </form>
             <div class="text-end mt-3">
-                <button id="resendOTPButton"><small>Resend OTP</small></button>
+                <a class="text-decoration-none" id="resendOTPButton"><small>Resend OTP</small></a>
                 <form id="resendOTPForm" asp-action="ResendOTP" method="post" style="display: none;">
                     <input type="hidden" id="userId" name="userId" value="@sessionValue" />
                 </form>
