@@ -117,7 +117,7 @@ namespace FinanceTracker.Controllers
 
                     if (roles.Contains("Admin"))
                     {
-                        return RedirectToAction("Dashboard", "FinanceAdmin");
+                        return RedirectToAction("ShowNews", "News");
                     }
                     else if (roles.Contains("User"))
                     {

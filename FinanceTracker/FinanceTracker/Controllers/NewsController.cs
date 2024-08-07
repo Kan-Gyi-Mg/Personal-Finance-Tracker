@@ -14,8 +14,7 @@ namespace FinanceTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowNews()
         {
-            var showallnews = _context.news.ToList();
-            return View(showallnews);
+            return View();
         }
 
     }
