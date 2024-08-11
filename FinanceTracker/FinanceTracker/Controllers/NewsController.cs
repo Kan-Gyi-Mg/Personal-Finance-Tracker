@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.DbClass;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Controllers
 {
@@ -14,7 +15,8 @@ namespace FinanceTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowNews()
         {
-            return View();
+            var news = await _context.news.ToListAsync();
+            return View(news);
         }
 
     }

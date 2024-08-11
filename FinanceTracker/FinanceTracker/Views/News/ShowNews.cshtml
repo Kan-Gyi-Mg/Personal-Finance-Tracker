@@ -1,3 +1,22 @@
-﻿@{
-    Layout = "_FinanceAdminLayous";
+﻿@model IEnumerable<FinanceTracker.Models.News.NewsModel>;
+@{
+    Layout = "_FinanceTrackerLayout";
 }
+<section>
+    <div class="container vh-100 overflow-y-auto">
+        <div class="row mt-2">
+            @foreach (var news in Model)
+            {
+                <div class="col-xl-4 col-md-4 col-sm-6 d-flex justify-content-center align-items-center mb-2 bg-primary">
+                    <img src="~/image/startingpage/maketrising.png" style="width: 200px;height:200px"/>
+                </div>
+                <div class="col-xl-8 col-md-8 col-sm-6 mb-2 bg-primary overflow-y-hidden">
+                    <h3 class="py-2">@news.NewsTitle</h3>
+                    <h4>@news.Description</h4>
+                    <p>@news.NewsBody</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
