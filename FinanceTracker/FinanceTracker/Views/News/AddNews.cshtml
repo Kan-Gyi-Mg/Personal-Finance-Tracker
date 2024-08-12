@@ -1,0 +1,37 @@
+﻿@model FinanceTracker.Models.News.NewsModel
+@{
+    Layout = null;
+}
+<link href="~/cdnlink/csscdn/bootstrap.min.css" rel="stylesheet" />
+
+<section class="container-fluid" style="background-color: #7F9AC0">
+    <div class="row vh-100 align-items-center justify-content-center">
+        <div class="col-sm-12 col-md-8 col-lg-6 bg-light px-5 py-4 rounded">
+            <div class="text-center mb-4">
+                <h2>News</h2>
+            </div>
+            <form asp-controller="News" asp-action="AddNews" method="post">
+                <div class="form-group mb-4">
+                    <label asp-for="NewsTitle" class="mb-2"></label>
+                    <input asp-for="NewsTitle" class="form-control" />
+                    <span asp-validation-for="NewsTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="Description" class="mb-2"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="NewsBody" class="mb-2"></label>
+                    <input asp-for="NewsBody" class="form-control" />
+                    <span asp-validation-for="NewsBody" class="text-danger"></span>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-50">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="~/cdnlink/jslibrary/bootstrap.bundle.min.js"></script>
+

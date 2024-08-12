@@ -1,22 +1,42 @@
 ﻿@model IEnumerable<FinanceTracker.Models.News.NewsModel>;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<FinanceUser> UserManager
+
 @{
     Layout = "_FinanceTrackerLayout";
+    FinanceUser user = await UserManager.GetUserAsync(User);
 }
+
 <section>
-    <div class="container vh-100 overflow-y-auto">
+    <div class="container mr-5">
         <div class="row mt-2">
             @foreach (var news in Model)
             {
-                <div class="col-xl-4 col-md-4 col-sm-6 d-flex justify-content-center align-items-center mb-2 bg-primary">
+                <div class="col-xl-4 col-md-4 col-sm-6 d-flex justify-content-center align-items-center d-none d-sm-block mb-sm-2 bg-primary">
                     <img src="~/image/startingpage/maketrising.png" style="width: 200px;height:200px"/>
                 </div>
-                <div class="col-xl-8 col-md-8 col-sm-6 mb-2 bg-primary overflow-y-hidden">
+                <div class="col-xl-8 col-md-8 col-sm-6 mb-2 bg-primary overflow-hidden position-relative">
                     <h3 class="py-2">@news.NewsTitle</h3>
                     <h4>@news.Description</h4>
                     <p>@news.NewsBody</p>
-                </div>
+                    @if (user != null && user.Id == news.UserId)
+                    {
+                        <div class="position-absolute bottom-0 end-0">
+                            <div class="d-flex p-2 me-2">
+                                <a href="@Url.Action("EditNews","News",new{newsid = news.NewsId})" class="btn btn-lg btn-warning me-2">Edit</a>
+                                <form asp-controller="News" asp-action="DeleteNews"  method="post">
+                                    <input type="hidden" name="newsid" value="@news.NewsId" />
+                                    <button type="submit" class="btn btn-lg btn-danger">Delete</button>
+                                </form>
+                            </div> 
+                        </div>
+                    }
+                </div>  
             }
         </div>
-    </div>
+    </div>    
 </section>
+<div class="position-absolute top-0 end-0 p-4">
+    <a href="@Url.Action("AddNews","News")" class="btn btn-secondary btn-lg">+</a>
+</div>
 

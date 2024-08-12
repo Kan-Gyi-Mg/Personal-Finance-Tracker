@@ -57,6 +57,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Operation}/{action=StartingPage}/{id?}");
+    pattern: "{controller=News}/{action=ShowNews}/{id?}");
 
 app.Run();
