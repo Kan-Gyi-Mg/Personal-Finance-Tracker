@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<FinanceUser> UserManager
+
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+    var isAdmin = User.IsInRole("Admin");
+    var isPermiumuser = User.IsInRole("PremiumUser");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,9 +30,24 @@
                         <li class="nav-item">
                             <a href="@Url.Action("StartingPage","Operation")" class="nav-link active">Home</a>
                         </li>
-                        <li class="nav-item ms-lg-5">
-                            <a href="@Url.Action("CalculateDashboard","Operation")" class="nav-link">Dashboard</a>
-                        </li>
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item ms-lg-5">
+                                <a href="@Url.Action("Dashboard","Admin")" class="nav-link">AdminDashboard</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-lg-5">
+                                <a href="@Url.Action("CalculateDashboard","Operation")" class="nav-link">Dashboard</a>
+                            </li>
+                        }
+                        @if (isPermiumuser)
+                        {
+                            <li class="nav-item ms-lg-5">
+                                <a href="@Url.Action("ShowBankStatus","FBank")" class="nav-link">Bank</a>
+                            </li>
+                        }
                         <li class="nav-item ms-lg-5">
                             <a href="@Url.Action("ShowNews","News")" class="nav-link">News</a>
                         </li>

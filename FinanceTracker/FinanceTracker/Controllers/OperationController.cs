@@ -1,4 +1,6 @@
 ﻿using FinanceTracker.DbClass;
+using FinanceTracker.Models.News;
+using FinanceTracker.Models.Operations;
 using FinanceTracker.Models.User;
 using FinanceTracker.ViewModels.operationView;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +44,49 @@ namespace FinanceTracker.Controllers
                 total = total,
             };
             return View(newmodel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CashCreate()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CashCreate(UserCashModel model)
+        {
+            FinanceUser user = await _userManager.GetUserAsync(User);
+            var addnews = new UserCashModel
+            {
+                UserId = user.Id,
+                Category = model.Category,
+                Amount = model.Amount,
+            };
+            await _context.usercash.AddAsync(addnews);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CalculateDashboard", "Operation");
+        }
+        [HttpGet]
+        public async Task<IActionResult> CashEdit(int cashid)
+        {
+            var cash = await _context.usercash.FirstOrDefaultAsync(n => n.cashId == cashid);
+            return View(cash);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CashEdit(UserCashModel model)
+        {
+            var editcash = await _context.usercash.FirstOrDefaultAsync(n => n.cashId == model.cashId);
+            editcash.Category = model.Category;
+            editcash.Amount = model.Amount;
+            _context.usercash.Update(editcash);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CalculateDashboard", "Operation");
+        }
+        [HttpPost]
+        public async Task<IActionResult> CashDelete(int cashid)
+        {
+            var newlist = await _context.usercash.FirstOrDefaultAsync(n => n.cashId == cashid);
+            _context.usercash.Remove(newlist);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CalculateDashboard", "Operation");
         }
     }
 }

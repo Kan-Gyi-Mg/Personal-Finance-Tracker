@@ -1,7 +1,8 @@
-﻿@model FinanceTracker.ViewModels.operationView.UserCashViewModel
+﻿@model IEnumerable<FinanceTracker.ViewModels.operationView.AdminUserViewModel>
 @{
-    Layout = "_FinanceTrackerLayout";
+    Layout = "_FinanceAdminLayous";
 }
+<link href="~/cdnlink/csscdn/bootstrap.min.css" rel="stylesheet" />
 <link href="~/cdnlink/csscdn/datatables.bootstrap4.min.css" rel="stylesheet" />
 <link href="~/cdnlink/csscdn/responsive.bootstrap4.min.css" rel="stylesheet" />
 <link href="~/cdnlink/csscdn/buttons.bootstrap4.min.css" rel="stylesheet" />
@@ -10,37 +11,31 @@
         min-height: 80vh;
     }
 </style>
-<section id ="dynamicSection">
+<section>
     <div class="container">
-        <div class="row">
-            <div class="col-12 col-sm-8 mb-sm-0 mb-2">
-                <p class="fs-1">Total: @Model.total</p>
-            </div>
-            <div class="col-12 col-sm-4 p-3">
-                <a href="@Url.Action("CashCreate","Operation")" class="btn btn-primary w-100">New Category</a>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <table id="showcashboard" class="table table-bordered table-hover mt-2">
+        <table id="showcashboard" class="table table-bordered table-hover mt-4">
             <thead>
                 <tr>
-                    <th>Category</th>
-                    <th>Amount</th>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Role</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var cash in Model.usercash)
+                @foreach (var user in Model)
                 {
                     <tr>
-                        <td>@cash.Category</td>
-                        <td>@cash.Amount</td>
-                        <td class="text-center"><a href="@Url.Action("CashEdit","Operation",new {cashid = cash.cashId})" class="btn btn-warning">Edit</a></td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
                         <td class="text-center">
-                            <form asp-controller="Operation" asp-action="CashDelete" method="post">
-                                <input type="hidden" name="cashId" value="@cash.cashId" />
+                            <a href="@Url.Action("UserEdit", "Admin", new { userid = user.UserId })" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td class="text-center">
+                            <form asp-controller="Admin" asp-action="UserDelete" method="post">
+                                <input type="hidden" name="userId" value="@user.UserId" />
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -50,39 +45,28 @@
         </table>
     </div>
 </section>
-<script src="~/cdnlink/jslibrary/fjquery.min.js"></script>
+<script src="~/cdnlink/jslibrary/bootstrap.bundle.min.js"></script>
+<script src="~/cdnlink/jslibrary/jquery.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/jquery.datatables.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/datatables.bootstrap4.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/datatables.responsive.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/responsive.bootstrap4.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/datatables.buttons.min.js"></script>
 <script src="~/cdnlink/jslibrary/datatablejs/buttons.bootstrap4.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/jszip.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/pdfmake.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/vfs_fonts.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/buttons.html5.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/buttons.print.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/buttons.colvis.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#showcashboard').DataTable({
             "paging": true,
             "lengthChange": false,
-            "searching": true, 
+            "searching": true,
             "ordering": true,
             "info": true,
             "autoWidth": false,
             "responsive": true,
-            dom: 'Bfrtip', 
-            buttons: [
-                'copy',
-                'excel',
-                'pdf',
-                'print',
-                'colvis' 
-            ]
+            
         });
     });
+
     function adjustSectionHeight() {
         const section = document.getElementById('dynamicSection');
         if (window.innerHeight < 800) {

@@ -20,13 +20,6 @@ namespace FinanceTracker.Controllers
             _context = context;
             _signInManager = signInManager;
         }
-        //show all user
-        [HttpGet]
-        public async Task<IActionResult> ShowUserList()
-        {
-            var User = _userManager.Users;
-            return View(User);
-        }
         //create user
         [HttpGet]
         public async Task<IActionResult> UserCreate() => View();
@@ -117,7 +110,7 @@ namespace FinanceTracker.Controllers
 
                     if (roles.Contains("Admin"))
                     {
-                        return RedirectToAction("ShowNews", "News");
+                        return RedirectToAction("Dashboard", "Admin");
                     }
                     else if (roles.Contains("User"))
                     {
