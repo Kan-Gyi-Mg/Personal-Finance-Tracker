@@ -1,0 +1,57 @@
+﻿@model FinanceTracker.ViewModels.operationView.UserCashViewModel
+@{
+    Layout = "_FinanceTrackerLayout";
+}
+<link href="~/cdnlink/csscdn/buttons.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/cdnlink/csscdn/datatables.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/cdnlink/csscdn/responsive.bootstrap4.min.css" rel="stylesheet" />
+<section>
+    <div></div>
+    <table id="showcashboard" class="table table-bordered table-hover mt-2">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var cash in Model.usercash)
+            {
+                <tr>
+                    <td>@cash.Category</td>
+                    <td>@cash.Amount</td>
+                    <td class="text-center"><a href="@Url.Action("CashEdit","Operation")" class="btn btn-warning">Edit</a></td>
+                    <td class="text-center"><a href="@Url.Action("CashEdit","Operation")" class="btn btn-danger">Delete</a></td>
+                </tr>
+            }
+            
+        </tbody>  
+    </table>
+</section>
+<script src="~/cdnlink/jslibrary/datatablejs/buttons.colvis.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/buttons.html5.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/buttons.bootstrap4.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/buttons.print.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/datatables.bootstrap4.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/datatables.buttons.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/datatables.responsive.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/jquery.datatables.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/jszip.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/pdfmake.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/responsive.bootstrap4.min.js"></script>
+<script src="~/cdnlink/jslibrary/datatablejs/vfs_fonts.js"></script>
+<script>
+    $(function () {
+        $('#showcashboard').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
