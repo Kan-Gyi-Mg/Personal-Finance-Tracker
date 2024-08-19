@@ -1,0 +1,64 @@
+﻿@model FinanceTracker.ViewModels.NewsView.NewsViewModel
+@{
+    Layout = "_FinanceTrackerLayout";
+}
+<style>
+    .full-height {
+        min-height: 90vh;
+    }
+</style>
+<section class="px-5">
+    <div class="container px-5 bg-white" id="dynamicSection">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-sm-3">
+                <img class="img-fluid" style="width:200px;height:200px" src="~/image/startingpage/maketrising.png" alt="maketrising" />
+            </div>
+            <div class="col-12 col-sm-9">
+                <h3 class="py-2">@Model.news.NewsTitle</h3>
+                <h4>@Model.news.Description</h4>
+            </div>
+        </div>
+        <p class="fs-3">@Model.news.NewsBody</p>
+        <hr />
+        <div>
+            <p class="fs-2">Comments</p>
+            <div class="d-flex">
+                <a class="btn btn-light me-3 active">Top</a>
+                <a class="btn btn-light">Newest</a>
+            </div>
+            <div class="mt-3">
+                <form asp-controller="News" asp-action="AddComment" method="post">
+                    <div class="d-flex align-items-center">
+                        <input type="hidden" asp-for="news.NewsId" value="@Model.news.NewsId" />
+                        <div class="form-group mb-0 me-5 flex-grow-1">
+                            <input type="text" class="form-control" asp-for="cbody" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary mr-5">Send</button>
+                    </div>
+                </form>
+            </div>
+            @if(Model.Comments!=null){
+                @foreach (var comment in Model.Comments)
+                {
+                    <div>
+                        <h3>@comment.username</h3>
+                        <p class="fs-4">@comment.CommentBody</p>
+                    </div>
+                }
+            }
+            
+        </div>
+    </div>
+</section>
+<script>
+    function adjustSectionHeight() {
+        const section = document.getElementById('dynamicSection');
+        if (window.innerHeight < 800) {
+            section.classList.add('full-height');
+        } else {
+            section.classList.remove('full-height');
+        }
+    }
+    adjustSectionHeight();
+    window.addEventListener('resize', adjustSectionHeight);
+</script>

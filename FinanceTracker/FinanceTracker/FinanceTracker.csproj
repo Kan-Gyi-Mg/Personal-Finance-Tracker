@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="Views\FinanceUser\UserLogin.cshtml" />
+    <Content Remove="Views\News\OneNews.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +36,16 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\FinanceUser\UserLogin.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\News\OneNews.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\FinanceUser\UserLogin.cshtml" />
+    <None Include="Views\News\OneNews.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\News\OneNews.cshtml" />
   </ItemGroup>
 
 </Project>

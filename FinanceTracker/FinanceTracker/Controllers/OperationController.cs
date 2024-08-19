@@ -9,5 +9,11 @@ namespace FinanceTracker.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> CalculateDashboard()
+        {
+
+            return View();
+        }
     }
 }

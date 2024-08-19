@@ -1,9 +1,11 @@
 ﻿using FinanceTracker.DbClass;
 using FinanceTracker.Models.News;
 using FinanceTracker.Models.User;
+using FinanceTracker.ViewModels.NewsView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace FinanceTracker.Controllers
 {
@@ -72,6 +74,32 @@ namespace FinanceTracker.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("ShowNews", "News");
         }
-
+        [HttpGet]
+        public async Task<IActionResult> OneNews(int newsid)
+        {
+            var onenew = await _context.news.FirstOrDefaultAsync(n => n.NewsId == newsid);
+            var comment = await _context.commentss.Where(com => com.newsid == onenew.NewsId).ToListAsync();
+            var newmodel = new NewsViewModel
+            {
+                news = onenew,
+                Comments = comment
+            };
+            return View(newmodel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddComment(NewsViewModel model)
+        {
+            var onenew = await _context.news.FirstOrDefaultAsync(n => n.NewsId == model.news.NewsId);
+            var comment = new CommentModel
+            {
+                CommentBody = model.cbody,
+                newsid = onenew.NewsId,
+                userid = (await _userManager.GetUserAsync(User))?.Id,
+                username = (await _userManager.GetUserAsync(User))?.UserName,
+            };
+            _context.commentss.Add(comment);
+            _context.SaveChanges();
+            return RedirectToAction("OneNews", "News", new {newsid = onenew.NewsId});
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace FinanceTracker.DbClass
         }
         public DbSet<FinanceUser> financeusers { get; set; }
         public DbSet<NewsModel> news { get; set; }
+        public DbSet<CommentModel> commentss { get; set; }
     }
 }
