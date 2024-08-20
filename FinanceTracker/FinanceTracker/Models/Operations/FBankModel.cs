@@ -7,7 +7,7 @@ namespace FinanceTracker.Models.Operations
         [Key]
         public int FBankid { get; set; }
         [Required]
-        public int BankAmount { get; set; }
+        public int BankAmount { get; set; } = 0;
 
         [Required]
         public string UserId { get; set; }

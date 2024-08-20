@@ -4,6 +4,7 @@ using FinanceTracker.ViewModels.FinanceUserView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FinanceTracker.RoleInitiator;
+using FinanceTracker.Models.Operations;
 
 namespace FinanceTracker.Controllers
 {
@@ -13,12 +14,14 @@ namespace FinanceTracker.Controllers
         private readonly SignInManager<FinanceUser> _signInManager;
         private readonly UserManager<FinanceUser> _userManager;
         private readonly FinanceDbContext _context;
-        public FinanceUserController(EmailService emailService,SignInManager<FinanceUser> signInManager,UserManager<FinanceUser> userManager, FinanceDbContext context)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public FinanceUserController(RoleManager<IdentityRole> roleManager,EmailService emailService,SignInManager<FinanceUser> signInManager,UserManager<FinanceUser> userManager, FinanceDbContext context)
         {
             _emailService = emailService;
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         //create user
         [HttpGet]
@@ -76,6 +79,37 @@ namespace FinanceTracker.Controllers
             await _emailService.SendEmailAsync(Email, "OTP Code", $"Your OTP code is {otp}");
             return RedirectToAction("VerifyForgotOTP");
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangePremium(string userid)
+        {
+            var user = await _userManager.FindByIdAsync(userid);
+            if (!await _roleManager.RoleExistsAsync("PremiumUser"))
+            {
+                var roleResult = await _roleManager.CreateAsync(new IdentityRole("PremiumUser"));
+                if (!roleResult.Succeeded)
+                {
+                    return BadRequest("Failed to create role.");
+                }
+            }
+            if (!await _userManager.IsInRoleAsync(user, "PremiumUser"))
+            {
+                var result1 = await _userManager.RemoveFromRoleAsync(user, "User");
+                var result = await _userManager.AddToRoleAsync(user, "PremiumUser");
+                if (!result.Succeeded)
+                {
+                    return NotFound();
+                }   
+            }
+            var fbank = new FBankModel
+            {
+                UserId = user.Id,
+                BankAmount = 0
+            };
+            await _context.fbank.AddAsync(fbank);
+            _context.SaveChanges();
+            return RedirectToAction("StartingPage", "Operation");
+        }
+
         //login user
         [HttpGet]
         public async Task<IActionResult> UserLogin() => View();

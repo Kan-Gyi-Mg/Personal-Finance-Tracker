@@ -2,9 +2,10 @@
 @inject UserManager<FinanceUser> UserManager
 
 @{
-    var user = UserManager.GetUserAsync(User).Result;
+    var user = await UserManager.GetUserAsync(User);
     var isAdmin = User.IsInRole("Admin");
     var isPermiumuser = User.IsInRole("PremiumUser");
+    var userid = user.Id;
 }
 <!DOCTYPE html>
 <html lang="en">

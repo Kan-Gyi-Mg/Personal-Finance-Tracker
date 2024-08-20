@@ -2,10 +2,7 @@
 @{
     Layout = "_FinanceAdminLayous";
 }
-<link href="~/cdnlink/csscdn/bootstrap.min.css" rel="stylesheet" />
-<link href="~/cdnlink/csscdn/datatables.bootstrap4.min.css" rel="stylesheet" />
-<link href="~/cdnlink/csscdn/responsive.bootstrap4.min.css" rel="stylesheet" />
-<link href="~/cdnlink/csscdn/buttons.bootstrap4.min.css" rel="stylesheet" />
+
 <style>
     .full-height {
         min-height: 80vh;
@@ -45,27 +42,12 @@
         </table>
     </div>
 </section>
-<script src="~/cdnlink/jslibrary/bootstrap.bundle.min.js"></script>
-<script src="~/cdnlink/jslibrary/jquery.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/jquery.datatables.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/datatables.bootstrap4.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/datatables.responsive.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/responsive.bootstrap4.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/datatables.buttons.min.js"></script>
-<script src="~/cdnlink/jslibrary/datatablejs/buttons.bootstrap4.min.js"></script>
+
 <script>
     $(document).ready(function () {
-        $('#showcashboard').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-            
-        });
+        $('#showcashboard').DataTable();
     });
+    
 
     function adjustSectionHeight() {
         const section = document.getElementById('dynamicSection');

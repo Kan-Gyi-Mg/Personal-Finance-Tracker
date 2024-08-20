@@ -1,11 +1,13 @@
 ﻿using FinanceTracker.DbClass;
 using FinanceTracker.Models.User;
 using FinanceTracker.ViewModels.operationView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceTracker.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly EmailService _emailService;
